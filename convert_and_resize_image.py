@@ -3,8 +3,8 @@ from PIL import Image
 import threading
 from pathlib import Path
 
-input_folder = r"D:\work\pet_project\img"
-output_folder = r"D:\work\pet_project\jpeg"
+input_folder = r"D:\FILE\test"
+output_folder = r"D:\FILE\test1"
 
 def convert_and_resize_images(input_folder, output_folder, max_width, max_height):
     for dirpath, _, filenames in os.walk(input_folder):
@@ -12,15 +12,15 @@ def convert_and_resize_images(input_folder, output_folder, max_width, max_height
         output_path = Path(output_folder, relative_path)
         os.makedirs(output_path, exist_ok=True)
         for filename in filenames:
-            if filename.lower().endswith(".png"):
+            if filename.lower().endswith(".jpg"):
                 input_file_path = os.path.join(dirpath, filename)
                 output_file_path = os.path.join(output_path,
-                                                os.path.splitext(filename)[0] + f"{max_width}x{max_height}" + ".jpeg")
+                                                os.path.splitext(filename)[0] + f"{max_width}x{max_height}" + ".png")
                 try:
                     with Image.open(input_file_path) as img:
                         rgb_img = img.convert("RGB")
                         rgb_img.thumbnail((max_width, max_height))
-                        rgb_img.save(output_file_path, format="JPEG", quality=85)
+                        rgb_img.save(output_file_path, format="PNG", quality=85)
                         print(
                             f"Converted and resized: {input_file_path} -> {output_file_path}"
                         )
@@ -36,18 +36,18 @@ if __name__ == "__main__":
     # max_height = int(input("Height: "))  # 592 #82 #278
 
     size1 = threading.Thread(
-        target=convert_and_resize_images, args=(input_folder, output_folder, 200, 200)
+        target=convert_and_resize_images, args=(input_folder, output_folder, 592, 592)
     )
-    size2 = threading.Thread(
-        target=convert_and_resize_images, args=(input_folder, output_folder, 800, 800)
-    )
+    # size2 = threading.Thread(
+    #     target=convert_and_resize_images, args=(input_folder, output_folder, 800, 800)
+    # )
     # size3 = threading.Thread(
     #     target=convert_and_resize_images, args=(input_folder, output_folder, 278, 278)
     # )
     size1.start()
-    size2.start()
+    # size2.start()
     # size3.start()
     size1.join()
-    size2.join()
+    # size2.join()
     # size3.join()
     print("Xong")
